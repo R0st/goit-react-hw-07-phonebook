@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as contactOperations from '../../redux/contact-operations';
+import contactsSelectors from '../../redux/contacts-selectors';
 
 // 
 const ContactList = ({ contacts, onDeleteContact }) => {
@@ -32,14 +33,12 @@ ContactList.propTypes = {
     contacts: PropTypes.array.isRequired,
     onDeleteContact: PropTypes.func.isRequired,
 };
-
-
-const getFilteredContacts = (allContacts, filter) => {
-    const normalizedFilter = filter.toLowerCase();
-    return allContacts.filter(({name}) =>
-        name.toLowerCase().includes(normalizedFilter),
-    );
-  }
+// const getFilteredContacts = (allContacts, filter) => {
+//     const normalizedFilter = filter.toLowerCase();
+//     return allContacts.filter(({name}) =>
+//         name.toLowerCase().includes(normalizedFilter),
+//     );
+//   }
 
 // const mapStateToProps = (state) => {
 //     const { filter, items } = state.contacts;
@@ -49,8 +48,8 @@ const getFilteredContacts = (allContacts, filter) => {
 //     }  
 // }
 //составляем пропсы, происходит операция фильтров
-const mapStateToProps = ({contacts: {items,filter}}) => ({
-    contacts: getFilteredContacts(items, filter)
+const mapStateToProps = (state) => ({
+    contacts: contactsSelectors.getFilteredContacts(state),
 })
 
 const mapDispatchToProps = dispatch => ({
